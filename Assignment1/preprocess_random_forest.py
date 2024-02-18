@@ -15,6 +15,7 @@ import pickle as pkl
 # Define the directories
 train_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Intel_Image_classification", "seg_train", "seg_train")
 test_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Intel_Image_classification", "seg_test", "seg_test")
+pred_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Intel_Image_classification", "seg_pred", "seg_pred")
 
 #pickle the data
 def pickle_data(data, filename):
@@ -35,9 +36,8 @@ def load_imgs(dire):
             img = img.flatten()
             images.append(img)
             labels.append(label)
+ 
     return np.array(images), np.array(labels)
-
-
 
 
 # TTS
