@@ -72,3 +72,6 @@ eda(train_dir, "train")
 test_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Intel_Image_classification", "seg_test", "seg_test")
 eda(test_dir, "test")
 
+# Total number of images for pred data
+pred_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Intel_Image_classification", "seg_pred", "seg_pred")
+print("Total number of images for pred data: ", len(os.listdir(pred_dir)))
