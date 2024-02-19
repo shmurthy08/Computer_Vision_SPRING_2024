@@ -89,7 +89,8 @@ random_images = random.sample(image_files, 10)
 predictions = []
 
 # Loop through each randomly selected image file
-for image_file in random_images:
+plt.figure(figsize=(15, 8))
+for i, image_file in enumerate(random_images, 1):
     # Load the image
     image_path = os.path.join(pred_dir, image_file)
     image = imread(image_path)
@@ -117,15 +118,19 @@ for image_file in random_images:
     
     
     # Visualize the image along with its predicted class
-    plt.figure(figsize=(8, 6))
+    plt.subplot(2, 5, i)
     plt.imshow(image.reshape(256,256,3))
     plt.title(f"Predicted Class: {pred_class}")
     plt.axis('on')
-    plt.savefig("rfc_pred_" + image_file + ".png")
-    plt.show()
+
     
     # Store the predictions
     predictions.append(pred_class)
+
+
+plt.tight_layout()
+plt.savefig("rfc_pred_" + ".png")
+plt.show()
 
 print(predictions)
 

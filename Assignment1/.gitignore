@@ -1,8 +1,8 @@
 *.txt
 *.pkl
 *.h5
-*prediction*
+
 *.aux
 *.tex
 *.log
-*.jpg.png
+*.jpg_prediction.png

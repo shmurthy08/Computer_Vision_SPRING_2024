@@ -23,7 +23,8 @@ random_images = random.sample(image_files, 10)
 predictions = []
 
 # Loop through each randomly selected image file
-for image_file in random_images:
+plt.figure(figsize=(15, 8))
+for i, image_file in enumerate(random_images, 1):
     # Load the image
     image_path = os.path.join(pred_dir, image_file)
     image = load_img(image_path, target_size=(256, 256))
@@ -50,14 +51,17 @@ for image_file in random_images:
         predicted_class = "street"
     
     # Optionally, you can print or visualize the image along with its predicted class
+    plt.subplot(2, 5, i)
     plt.imshow(load_img(image_path))
     plt.title(f"Predicted Class: {predicted_class}")
-    plt.axis('off')
-    plt.savefig(image_file+'_prediction.png')
-    plt.show()
+    plt.axis('on')
+
     
     # Store the predictions
     predictions.append(predicted_class)
 
+plt.tight_layout()
+plt.savefig('cnn_prediction.png')
+plt.show()
 # Print the predictions
 print(predictions)
