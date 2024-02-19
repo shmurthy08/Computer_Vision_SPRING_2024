@@ -13,3 +13,39 @@ toc-title: Table of Contents
 \newpage
 
 
+# 1. Problem Statement
+
+The Intel Image Classification dataset contains thousands of images of natural scenery around the world. The images are divided into 6 categories: buildings, forest, glacier, mountain, sea, and street. The goal of this project is to build a model that can accurately classify these images into their respective categories. 
+
+Image classification is an ideal way to learn about CNN-based models and understand how it can outperform traditional machine learning models like Random Forest. Hence, this project will compare the performance of a CNN, specficially the VGG16 model, with a Random Forest Model. 
+
+While, the CNN model is expected to outperform the Random Forest model, we want to understand the extent to which it does so. Not every problem requires a complex CNN model, and understanding when it can be used effectively is vital. Nevertheless, based on my dataset, I expect the CNN model to be significantly better than the Random Foreset Model. Also, Deep Learning is required to properly classify the images in the dataset. 
+
+Deep learning is needed for this project because the data and relationships are complex. The pixels in the image are not independent features; thus, the pixels hold key spatial information. CNN models derive and understand the spatial relationships of images and understand generalized patterns such that they can classify new images perfectly. The Random Forest model, on the other hand, would not understand the spatial relationships because it requires the pixels to be flattened into a single row and then fed into the model. Essentially, every pixel would be treated as an independent feature, for the scope of a picture that is not ideal. However, I chose the Random Forest model because it is one of the better simple models when it comes to classification tasks. Random Forests use multiple decision trees to determine the best class for the input data. However, it is prone to overfitting when dealing with images because it focuses a lot on the training set and not generalize well to new data. This is because every pixel is independent so the model doesn't learn that a certain set of pixels would reveal a certain class with high probability. For instance, a set of 100 pixels that represent the sky may not be understood by the Random Forest because every pixel is an independent feature. 
+
+Therefore, using a Deep learning model is an ideal approach. This report will delve into the specifics of the models and their perfomances. 
+
+# 2. Data
+
+
+
+
+# 3. Methods
+
+## 3.1 Data Preprocessing
+
+### 3.1.1 Random Forest Model
+
+### 3.1.2 CNN Model
+
+## 3.2 Model Building
+
+### 3.2.1 Random Forest Model
+
+### 3.2.2 CNN Model
+
+# 4. Results
+
+# 5. Discussion
+
+# 6. Works Cited
