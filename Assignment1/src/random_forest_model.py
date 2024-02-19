@@ -2,8 +2,11 @@ from sklearn.ensemble import RandomForestClassifier as rfc
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import confusion_matrix
+from skimage.io import imread
+from skimage.transform import resize
+from tensorflow.keras.preprocessing.image import load_img
 
-
+import random
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -20,11 +23,11 @@ X_test = unpickle_data("X_test.pkl")
 y_train = unpickle_data("y_train.pkl")
 y_test = unpickle_data("y_test.pkl")
 
-rfc = rfc(n_estimators=10, random_state=50)
+rfc = rfc(n_estimators=1, random_state=50)
 
 rfc.fit(X_train, y_train)
 
-
+#--------------------------------------------------------------
 
 # Train Data Analysis
 y_pred_train = rfc.predict(X_train)
@@ -69,3 +72,60 @@ def plot_confusion_matrix(y_true, y_pred, title):
     
 plot_confusion_matrix(y_train, y_pred_train, title="Confusion Matrix for Train Data")
 plot_confusion_matrix(y_test, y_pred_test, title="Confusion Matrix for Test Data")
+
+
+#--------------------------------------------------------------
+
+# Define the directory containing the prediction images
+pred_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Intel_Image_classification", "seg_pred", "seg_pred")
+
+# Get a list of image file names in the directory
+image_files = os.listdir(pred_dir)
+
+# Randomly select 10 images
+random_images = random.sample(image_files, 10)
+
+# List to store predictions
+predictions = []
+
+# Loop through each randomly selected image file
+for image_file in random_images:
+    # Load the image
+    image_path = os.path.join(pred_dir, image_file)
+    image = imread(image_path)
+    image = resize(image, output_shape=(256,256), anti_aliasing=True)
+    image = image.flatten()
+    image = image.reshape(1, -1)
+    
+    
+    # Predict class
+    pred_class = rfc.predict(image)[0]
+    
+    # Map numeric label to class name
+    if pred_class == 0:
+        pred_class = "buildings"
+    elif pred_class == 1:
+        pred_class = "forest"
+    elif pred_class == 2:
+        pred_class = "glacier"
+    elif pred_class == 3:
+        pred_class = "mountain"
+    elif pred_class == 4:
+        pred_class = "sea"
+    elif pred_class == 5:
+        pred_class = "street"
+    
+    
+    # Visualize the image along with its predicted class
+    plt.figure(figsize=(8, 6))
+    plt.imshow(image.reshape(256,256,3))
+    plt.title(f"Predicted Class: {pred_class}")
+    plt.axis('on')
+    plt.savefig("rfc_pred_" + image_file + ".png")
+    plt.show()
+    
+    # Store the predictions
+    predictions.append(pred_class)
+
+print(predictions)
+
