@@ -27,7 +27,42 @@ Therefore, using a Deep learning model is an ideal approach. This report will de
 
 # 2. Data
 
+The dataset contained roughly 24,000 images of natural scenery. However, I only used ~12,000 images for the scope of this project. I develop code on a virtual server used by other students. When copying over the files, I was unable to copy all the images. To copy the images I used the `scp` command. Nevertheless, ~12,000 images made for a solid sample set. The specific breakdowns of the train, test, and prediction sets are as follows:
 
+- Train: 7335 images
+- Test: 3000 images
+- Prediction: 1785 images
+
+After copying the data, I ran an `eda.py` file to visualize the classes and the images. 
+
+The first step was to visualize the train and test class distributions. 
+
+![Train Class Distribution](../imgs/train_class_distribution.png)
+
+This train class was imbalanced. The street, mountain, and sea classes had significantly fewer images than the other classes. The buildings and forest classes had the most images. This imbalance could lead to biased models. However, I chose not to address the imbalance issues because models need to be trained on a variety of sources. This imbalance could occur in the real world, albeit for a different situation, and the model must handle it and learn relationships. 
+\pagebreak
+The test class distribution is as follows:
+
+![Test Class Distribution](../imgs/test_class_distribution.png)
+
+The test class was not as imbalanced as the train class. The classes were more evenly distributed. While some classes had more than others, the difference was not large enough such that the model wouldn't have sufficient data to predict unseen data of a wide variety. 
+
+Next, I visualized the images of the train and test sets. 
+
+![Train Images](../imgs/train_sample_images.png)
+
+![Test Images](../imgs/test_sample_images.png)
+
+The images were of high quality and had similar sizes. Based on these sample images, the model should be able to understand where everything is located and not worry about areas being darker and unrecognizable. 
+
+The final step I took was to analyze the image sizes.
+
+![Train Image Sizes](../imgs/train_image_size_distribution.png)
+
+Both, the train and test had the same image size distribution; thus, I am only including the Train distribution. All the images were 150x150. While this is a good size to train with, I augmented the images to a 256x256 size. When scaling an image to a larger size, the pictures can become more unclear and tougher to analyze. This is done purposefully to ensure that the model is trained on grainer data and can handle unclear images.
+
+
+Finally, for the prediction data, the data is completely unlabeled and there are no class distributions. The images are of the same size as the train and test images. From this analysis of the prediction data, I will only use this to predict the model and not for other analysis. The goal of this dataset will be to see how the CNN model and Random Forest model perform on unseen, unlabeled data. 
 
 # 3. Methods
 
