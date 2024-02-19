@@ -1,0 +1,15 @@
+---
+title: "Image Classification: CNN vs Random Forest"
+author: "Shree Murthy"
+date: "02/19/2024"
+format:
+  pdf:
+    fig-pos: 'h'
+    highlight-style: github   
+toc: true
+toc-depth: 3
+toc-title: Table of Contents
+---
+\newpage
+
+
