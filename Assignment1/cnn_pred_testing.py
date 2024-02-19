@@ -2,6 +2,7 @@ import os
 import numpy as np
 import tensorflow as tf 
 import matplotlib.pyplot as plt
+import random
 from tensorflow.keras.applications.vgg16 import preprocess_input
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.models import load_model
@@ -14,12 +15,15 @@ pred_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Intel_Imag
 
 # Get a list of image file names in the directory
 image_files = os.listdir(pred_dir)
-image_files = image_files[5:]
+
+# Randomly select 10 images
+random_images = random.sample(image_files, 10)
+
 # List to store predictions
 predictions = []
 
-# Loop through each image file
-for image_file in image_files:
+# Loop through each randomly selected image file
+for image_file in random_images:
     # Load the image
     image_path = os.path.join(pred_dir, image_file)
     image = load_img(image_path, target_size=(256, 256))
@@ -49,7 +53,7 @@ for image_file in image_files:
     plt.imshow(load_img(image_path))
     plt.title(f"Predicted Class: {predicted_class}")
     plt.axis('off')
-    plt.savefig(image_file+'.png')
+    plt.savefig(image_file+'_prediction.png')
     plt.show()
     
     # Store the predictions
