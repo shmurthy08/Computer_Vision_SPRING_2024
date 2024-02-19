@@ -8,7 +8,6 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle as pkl
-import matplotlib.pyplot as plt
 import seaborn as sns
 
 def unpickle_data(filename):
