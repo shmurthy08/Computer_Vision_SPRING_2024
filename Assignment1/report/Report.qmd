@@ -29,7 +29,6 @@ Therefore, using a Deep learning model is an ideal approach. This report will de
 
 
 
-
 # 3. Methods
 
 ## 3.1 Data Preprocessing
