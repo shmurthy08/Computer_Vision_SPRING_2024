@@ -24,7 +24,7 @@ from sklearn.model_selection import train_test_split
 img_size = (256,256)
 batch_size = 64
 num_classes = 6
-epochs = 1
+epochs = 10
 
 # Define the directories
 train_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Intel_Image_classification", "seg_train", "seg_train")

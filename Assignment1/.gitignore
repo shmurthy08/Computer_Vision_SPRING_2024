@@ -1,4 +1,4 @@
 *.txt
 *.pkl
 *.h5
-prediction*
+*prediction*
