@@ -77,7 +77,7 @@ The final step I took was to analyze the image sizes.
 
 ![Train Image Sizes](../src/train_image_size_distribution.png){width=375}
 
-Both, the train and test had the same image size distribution; thus, I am only including the Train distribution. All the images were 150x150. While this is a good size to train with, I augmented the images to a 256x256 size. When scaling an image to a larger size, the pictures can become more unclear and tougher to analyze. This is done purposefully to ensure that the model is trained on grainer data and can handle unclear images.
+Both, the train and test had the same image size distribution; thus, I am only including the Train distribution. All the images had a width of 150 and height that ranged from 100 to 150. While these are good sizes to train with, I augmented the images to a 256x256 size for two reasons. The first was to ensure all the images are the same size. The second is because when scaling an image to a larger size, the pictures can become more unclear and tougher to analyze. This is done purposefully to ensure that the model is trained on grainer data and can handle unclear images.
 
 Finally, for the prediction data, the data is completely unlabeled and there are no class distributions. The images are of the same size as the train and test images. From this analysis of the prediction data, I will only use this to predict the model and not for other analysis. The goal of this dataset will be to see how the CNN model and Random Forest model perform on unseen, unlabeled data. 
 
@@ -213,7 +213,7 @@ For the CNN Epochs, I started with 100 epochs with no early stopping. The result
 
 The dropout and dense layer nodes were experimented with to ensure that the model didn't overfit and learned the complex relationships in the data. The dropout was initially set to 0.2 and one dense layer set to 512. The model still performed well however the accuracy and loss weren't too close to each other even though they were high values associated with the train and val's respective accuracy and loss. I increased the dropout to 0.5 and added dense layer nodes starting from 1024 and decreased to 512 and 256. This was a good balance to ensure the model didn't overfit and learned the complex relationships in the data. Adding and modifying the extra layers impacted the model's generalizations. 
 
-For the size of my dataset, a batch size of 64 provided a good balance of images per batch and reduced the computational resources required. I could've stuck with the default of 32; however, with 12,000 images, the model would've taken a long time to train. The batch size of 64 was a good balance to ensure the model was trained effectively and efficiently. The image size was increased from 150x150 to 256x256. This was done to ensure that the model was trained on grainer data and could handle unclear images. 
+For the size of my dataset, a batch size of 64 provided a good balance of images per batch and reduced the computational resources required. I could've stuck with the default of 32; however, with 12,000 images, the model would've taken a long time to train. The batch size of 64 was a good balance to ensure the model was trained effectively and efficiently. The image size was increased to 256x256. This was done to ensure that the model was trained on grainer data and could handle unclear images. Also, it ensured all images were the same height and width to avoid biases. 
 
 
 ## 5.1 Future Work
