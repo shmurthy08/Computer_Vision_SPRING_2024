@@ -40,7 +40,7 @@ for cls in classes:
     cls_files = [os.path.join(cls_dir, f) for f in os.listdir(cls_dir)]
     train_files.extend(cls_files)
 
-# Create a DataFrame with file paths and labels to ensure proper train test split
+# Create a DataFrame with file paths and labels to train test split
 train_df = pd.DataFrame({'filepath': train_files, 'label': [os.path.basename(os.path.dirname(f)) for f in train_files]})
 
 # Train-test split for the DataFrame
@@ -68,6 +68,7 @@ val_gen = val_datagen.flow_from_dataframe(
     batch_size=batch_size,
     class_mode='categorical'
 )
+# Flow from Directory for test data
 test_gen = test_datagen.flow_from_directory(
     test_dir,
     target_size=img_size,
@@ -81,9 +82,6 @@ test_gen = test_datagen.flow_from_directory(
 
 #--------------------------------------------
 # Model Building: VGG16
-
-
-
 
 # Load VGG16
 base_model = VGG16(weights='imagenet', include_top=False, input_shape=(256,256,3))
@@ -103,7 +101,7 @@ x = Dense(256, activation="relu")(x)
 x = BatchNormalization()(x)
 output = Dense(num_classes, activation="softmax")(x)
 
-# combine base and custom
+# Combine base and custom layers
 model = Model(inputs=base_model.input, outputs=output)
 
 # Early Stopping
@@ -141,7 +139,7 @@ plt.show()
 
 # -----------------------------------------------
 
-# Make evaluation on the test data
+# Evaluation on the test data
 model.evaluate(test_gen)
 
 # Confusion Matrix for test dir
