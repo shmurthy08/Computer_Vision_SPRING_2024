@@ -17,15 +17,32 @@ toc-title: Table of Contents
 
 The Intel Image Classification dataset contains thousands of images of natural scenery around the world. The images are divided into 6 categories: buildings, forest, glacier, mountain, sea, and street. The goal of this project is to build a model that can accurately classify these images into their respective categories. 
 
-Image classification is an ideal way to learn about CNN-based models and understand how it can outperform traditional machine learning models like Random Forest. Hence, this project will compare the performance of a CNN, specficially the VGG16 model, with a Random Forest Model. 
+Image classification is an ideal way to learn about CNN-based models and understand how it can outperform traditional machine learning models like Random Forest. To explain, why we need to use a CNN model I will describe how the Random Forest Model performed and why it was not ideal for this task. The rest of this report will delve into how the Random Forest was built and how the data was preprocessed.  
 
-While, the CNN model is expected to outperform the Random Forest model, we want to understand the extent to which it does so. Not every problem requires a complex CNN model, and understanding when it can be used effectively is vital. Nevertheless, based on my dataset, I expect the CNN model to be significantly better than the Random Foreset Model. Also, Deep Learning is required to properly classify the images in the dataset. 
+The Random Forest model performed poorly on the dataset. The model was unable to learn the complex relationships between the images and the classes. 
 
-Deep learning is needed for this project because the data and relationships are complex. The pixels in the image are not independent features; thus, the pixels hold key spatial information. CNN models derive and understand the spatial relationships of images and understand generalized patterns such that they can classify new images perfectly. The Random Forest model, on the other hand, would not understand the spatial relationships because it requires the pixels to be flattened into a single row and then fed into the model. Essentially, every pixel would be treated as an independent feature, for the scope of a picture that is not ideal. However, I chose the Random Forest model because it is one of the better simple models when it comes to classification tasks. Random Forests use multiple decision trees to determine the best class for the input data. However, it is prone to overfitting when dealing with images because it focuses a lot on the training set and not generalize well to new data. This is because every pixel is independent so the model doesn't learn that a certain set of pixels would reveal a certain class with high probability. For instance, a set of 100 pixels that represent the sky may not be understood by the Random Forest because every pixel is an independent feature. 
+## 1.1 Random Forest Results and Analysis
 
-Therefore, using a Deep learning model is an ideal approach. This report will delve into the specifics of the models and their perfomances. 
+The Random Forest model was trained and tested on the seg_train and seg_test data. The model's performance was as follows:
 
-# 2. Data
+![Random Forest - Training Results](../src/rfc_training_report.png){width=200}
+
+![Random Forest - Testing Results](../src/rfc_testing_report.png){width=200}
+
+Based on these results, the model became extremely overfit. The model's training accuracy was nearly double the testing accuracy (80% and 35% respectively). Furthermore, the model was overfit because the F1-score, precision, and recall scores were all balanced and similar to each other. However, when the testing data was used, those scores were all over the place and heavily biased in favor of the forest class. This imbalance just underscores that the model was trained and was overfit. Running MAE, MSE, R2 on this model doesn't make sense because this is a classification task.
+
+Also, the model not being able to discern when the sea was present is very concerning. The other classes may have confused the model and made it think that light, or dark, blue referred sky and not the sea. Below are some example outcomes of the test predictions:
+
+![Random Forest - Test Predictions](../src/rfc_pred_.png){width=300}
+
+This picture ties the numerical outcomes together. So many pictures are misclassified as forest. This idea is inline with the previous analysis that the model was biased towards classifying predictions as the forest class. The sea class definitely took the most impact from this bias. For a dataset that is supposed to be natural scenery and have a variety of pictures of different angles and areas, the model should be able to discern what class represents what class. The Random Forest was just not able to do that. 
+
+## 1.2 Overall 
+
+Thus, the inability of the Random Forest model to learn relationships and not process the information properly to classify images correctly is why I will be using a CNN model to classify the images. The model should perform and learn the relationships better than the Random Forest model because the pixels aren't flattened and the model reads the images in its totality. 
+
+
+# 2. Exploratory Data Analysis
 
 The dataset contained roughly 24,000 images of natural scenery. However, I only used ~12,000 images for the scope of this project. I develop code on a virtual server used by other students. When copying over the files, I was unable to copy all the images. To copy the images I used the `scp` command. Nevertheless, ~12,000 images made for a solid sample set. The specific breakdowns of the train, test, and prediction sets are as follows:
 
@@ -135,9 +152,6 @@ Once the model is done training, the model is saved to be used for future predic
 
 # 4. Results
 
-## 4.1 Random Forest Model
-
-The Random Forest model was trained and tested on the seg_train and seg_test data. The model's performance was as follows:
 
 
 
