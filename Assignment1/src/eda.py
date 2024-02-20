@@ -55,10 +55,9 @@ def eda(data_dir, name):
 
     widths, heights = zip(*image_sizes)
     plt.figure(figsize=(10, 6))
-    plt.hist(widths, bins=20, alpha=0.5, label='Width')
-    plt.hist(heights, bins=20, alpha=0.5, label='Height')
-    plt.xlabel('Image Size')
-    plt.ylabel('Frequency')
+    plt.scatter(widths, heights, label='Image Size', alpha=0.5)
+    plt.xlabel('Width')
+    plt.ylabel('Height')
     plt.title('Image Size Distribution')
     plt.legend()
     plt.savefig(name + "_image_size_distribution.png")
