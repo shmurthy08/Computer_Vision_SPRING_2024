@@ -152,9 +152,83 @@ Once the model is done training, the model is saved to be used for future predic
 
 # 4. Results
 
+The Random Forest results were already discussed in the Problem Statement section. This section will focus soley on the CNN model. 
+
+## 4.1 CNN Model
+
+The CNN model was trained and tested on the train test split conducted on the seg_train data. The model's performance was much better than the Random Forest model. The model's performance was as follows:
+
+![CNN Model - Training Results](../src/cnn_acc_loss.png){width=300}
+
+![CNN Model - Training vs Validation Loss](../src/Training%20and%20Validation%20Loss%20of%20CNN%20Model.png){width=250}
+
+This model performed much better than the Random Forest model. The model's training and testing accuracy and loss were very close together. This is an extremely good sign because the model isn't too overfit. The performance of the training model bodes well for unseen data. The second graph of the loss shows that the model's val_loss is greater than the train_loss by the time the epochs are completed. While this indicates some overfitting it is not as severe as the Random Forest Model. Also, both loss values are within 0.15 of each other which isn't a large difference. Coupled with strong accuracy scores for the two sets, the model is deemed to be trained well with minimal overfitting. 
+
+For the unseen data the model performed as follows:
+
+![CNN Model - Testing Results](../src/cnn_classification_report.png){width=300}
+
+![CNN Model - Confusion Matrix for Test Data](../src/Confusion%20Matrix%20of%20Test%20Data%20for%20CNN%20Model.png){width=300}
+
+The classification report showcases a consistent prediction trend across all classes. The F1-score, precision, and recall scores are balanced and extremely high. This indicates that the model is confidently predicting unseen data correctly and effectively. The model falters slightly when classifying glaciers and mountains. This does make sense becasuse glaciers and mountains can look similar and glaciers can be found on mountains. Nevertheless, the model classified these classes with 85%+ accuracy which is still strong and better than the testing accruacy of the Random Forest model.
+
+The confusion matrix showcases the model's ability to classify the classes effectively. The matrix's main diagonal is dark and the off-diagonal values are light. Thus, the model is apt at classification properly. While the confusion matrix doesn't provide much new information, one point that stood out was that model sometimes misclassifies the following classes as each other:
+
+  - Buildings and Sea
+  - Mountain and Forest
+  - Mountain and Glacier
+
+This could be attributed to the images containing similar features. For example, a picture of sea could contain a building and a picture of a mountain could contain a glacier. While it is classifying something present in the picture, it ended up not matching the label. Nevertheless, the model is still able to classify these classes effectively and the misclassifications are not too severe.
 
 
+Based on the model's performance I expected it to classify unseen, unlabeled data effectively. Thus, below are 10 images that the model predicted:
+
+![CNN Model - Test Predictions](../src/cnn_prediction.png){width=300}
+
+This set of images showcases the model's ability to classify unseen data really well. Every picture looks like it was classified correctly. Since there are no ground truth labels, I cannont provide concrete accuracy values. Based on the eye test, the model classified the images correctly based on the information present. 
+
+
+## 4.2 Overall
+
+Overall, the CNN model worked extremely well on the training, validation and test data as well as the unlabeled/unseen data. The model is definitely better than the Random Forest model. The model was able to learn the complex relationships between the images and the classes and classify the images effectively. The model's performance on the unseen data is a good sign that the model can be used to classify images in the future.
 
 # 5. Discussion
 
+In conclusion, the two models preformed drastically different. The random forest model was extremly overfit and biased to certain classes. The Random Forest model performed poorly on the dataset, whereas the CNN model performed very well. With respect to the problem, the stats of the Random Forest isn't something we want to pursue long-term. It makes no sense to use a model that is overfit and biased. Models need to strive for balance when trying to conduct image classification or any other task. The goal of this project was to use a CNN model to classify images and prove why it was important, the stats analyzed in the report underscore this goal. 
+
+For hyperparamter tuning, I experimented with the following:
+
+```
+  - Number of estimators
+  - Epochs (and Early Stopping Patience)
+  - Dropout
+  - Dense layer nodes
+  - Batch size
+  - Image size
+```
+
+For the Random Forest, I initially used 100 estimators and then reduced it to 10. When it was 100, the model reach ~99% train accuracy and ~42% test accuracy. This was not a large enough jump from the aforementioned results to justify the time and computational resources required to run the model with 100 estimators. Reducing the estimators to 10 was a good sweet spot to ensure that the model learned enough about the images and minimzed the time/complexity of the model. 
+
+For the CNN Epochs, I started with 100 epochs with no early stopping. The result of this was that the train and val loss diverged very quickly and the model was too overfit. Essentially, the model was just losing information after a certain point. During this iterations, I noticed that the model performed well until 10 epochs before it diverged. The accuracy also dropped off for the validation data after the 10th epoch. With this in mind I dropped the epochs to 10. This was a good start; however, I noticed that the loss still diverged a fair amount around the 9th/10th epoch. Thus, I added early stopping with a patience of 3. While I could increase this, it doesn't make sense when working with 10 epochs to have a patience of > 3. The higher the patience the better off just running the model flat out with 10 epochs and no early stopping. Adding the early stopping ensured the model didn't overfit and the accuracy and loss didn't diverge quickly in the wrong directions. 
+
+The dropout and dense layer nodes were experimented with to ensure that the model didn't overfit and learned the complex relationships in the data. The dropout was initially set to 0.2 and one dense layer set to 512. The model still performed well however the accuracy and loss weren't too close to each other even though they were high values associated with the train and val's respective accuracy and loss. I increased the dropout to 0.5 and added dense layer nodes starting from 1024 and decreased to 512 and 256. This was a good balance to ensure the model didn't overfit and learned the complex relationships in the data. Adding and modifying the extra layers impacted the model's generalizations. 
+
+For the size of my dataset, a batch size of 64 provided a good balance of images per batch and reduced the computational resources required. I could've stuck with the default of 32; however, with 12,000 images, the model would've taken a long time to train. The batch size of 64 was a good balance to ensure the model was trained effectively and efficiently. The image size was increased from 150x150 to 256x256. This was done to ensure that the model was trained on grainer data and could handle unclear images. 
+
+
+## 5.1 Future Work
+
+In the future I would want to experiment with creating my own CNN model from scratch without the transfer learning to see how well it would perform. It would reduce some computational resources because I wouldn't be loading in the large VGG16 that was trained on a wide variety of images and tasks. My own model would be catered to my task. It would be an interesting comparison to see if it was worth using the VGG16 model or if I could've just used my own model.
+
+Also, I would want to experiment with using an SVM, KNN, or basic Decision Trees to see if another, simpler, model could do better than the Random Forest. The Random Forest was a good baseline to compare the CNN model to; however, it would be interesting to see if another model could do better. 
+
+Finally, I would want to experiment with the data augmentation and see if I could've done more to ensure the model was trained on a wide variety of images. I only tested with the flip and rotation operations. It would be intersting to see what other opertaions I could do and how that impacts the training process. I believe the augmentation plays a key role in the model's training, so it would be intersting to see if adding more improves or hinders the model's effectiveness. 
+
+
 # 6. Works Cited
+
+- [Confusion Matrix Visualization](https://medium.com/@dtuk81/confusion-matrix-visualization-fc31e3f30fea)
+
+- [Image Augmentation and ImageDataGenerator](https://www.analyticsvidhya.com/blog/2020/08/image-augmentation-on-the-fly-using-keras-imagedatagenerator/) 
+
+- [EDA Ideas for Image Classification](https://medium.com/geekculture/eda-for-image-classification-dcada9f2567a)
