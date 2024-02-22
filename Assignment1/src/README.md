@@ -21,6 +21,7 @@ Dylan Inafuku and Rahul Sura:
 
 - Code Compiles and runs properly
 - Code can produce other images that aren't used in the report, these images helped me flesh out my report even though it wasn't included. The code for these images are committed in the repository. 
+- Tried to push cnn model and random forest model, github was not able to handle the size of the files and caused tons of issues when reverting the push and fixing my git history. 
 
 # References
 
