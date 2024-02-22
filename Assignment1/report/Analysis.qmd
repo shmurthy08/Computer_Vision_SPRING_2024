@@ -25,7 +25,7 @@ To understand if deep learning was required, I created a Random Forest model. I 
 
 ![Random Forest - Confusion Matrix](../src/Confusion%20Matrix%20for%20Test%20Data.png){width=215}
 
-Based on the test and train results, the model became extremely overfit. The model's training accuracy was nearly double the testing accuracy (80% and 35% respectively). Also, the classification report showed that the model wasn't able to discern the sea class. Overall, the model was not able to generalize on unseen data. 
+Based on the test and train results, the model became extremely overfit. The model's training accuracy was nearly double the testing accuracy (98% and 43% respectively). Also, the classification report showed that the model wasn't able to discern the sea class. The model was heavily biased in classifying the test data as forest. Overall, the model was not able to generalize on unseen data. 
 
 Below are some example outcomes of the test predictions that further illustrate the model's inablity to classify images:
 
@@ -89,18 +89,18 @@ The matrix proved that it learned the features extremely well and was able to ef
 
 Below is the confusion matrix of seg_test data and output of sample images from the seg_pred data:
 
-![VGG16 - Confusion Matrix](../src/Confusion%20Matrix%20of%20Test%20Data%20for%20CNN%20Model.png){width=250}
+![VGG16 - Confusion Matrix](../src/Confusion%20Matrix%20of%20Test%20Data%20for%20CNN%20Model.png){width=225}
 
-![VGG16 - Model Predictions](../src/cnn_prediction.png){width=300}
+![VGG16 - Model Predictions](../src/cnn_prediction.png){width=225}
 
 
 # 5. Discussion
 
 In conclusion, the VGG16 model was effective in performing the image classification task and outperformed the Random Forest model. It reinforced the need for Deep Learning. 
 
-For the hyperparameters I conducted trial and error to find the best combination. For the Random Forest I tried 100 estimators but that didn't improve the accuracy of the train and test substantially. For the VGG16 model, I tried 100 epochs with the same early stopping but the model started losing information by the time it stopped. 
+For the hyperparameters, I conducted trial and error to find the best combination. For the Random Forest I tried 100 estimators but that didn't greatly improve the accuracy of the train and test. For the VGG16 model, I tried 100 epochs with the same early stopping but the model started losing information by the time it stopped. 
 
-In the future, I would want to redo this with all the images in the dataset. For this report, I could only use ~12k images due to some issues encountered when trying to copy over all the files from my local desktop to my virtual machine. The extra images could reduce class imbalances and make the models more robust. Overall, I learned that a CNN model is robust and able to take all spatial relationships into account and generalize the features well. This was a great experience and understand when to use a Random Forest and when to use a CNN model.
+In the future, I would want to redo this with all the images in the dataset. For this report, I could only use ~12k images due issues encountered when trying to copy all the files from local desktop to virtual machine. The extra images could reduce class imbalances and make the models more robust. Overall, a CNN model is robust and able to take all spatial relationships into account and generalize the features well. This was a great experience and understand when to use a Random Forest and when to use a CNN model.
 
 \pagebreak
 # 6. References
