@@ -134,7 +134,7 @@ plt.ylabel('Loss')
 plt.legend()
 plt.title('Training and Validation Loss')
 plt.savefig("Training and Validation Loss of CNN Model" + ".png")
-plt.show()
+
 
 
 # -----------------------------------------------
@@ -161,7 +161,6 @@ plt.xlabel('Predicted labels\nAccuracy: {:.2f}%'.format(accuracy))
 plt.ylabel('True labels')
 plt.title("Confusion Matrix - CNN Model for Test Data")
 plt.savefig("Confusion Matrix of Test Data for CNN Model" + ".png")
-plt.show()
 
 
 # Classification report for test data

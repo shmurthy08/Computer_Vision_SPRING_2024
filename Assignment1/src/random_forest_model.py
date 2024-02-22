@@ -4,7 +4,6 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import confusion_matrix
 from skimage.io import imread
 from skimage.transform import resize
-from tensorflow.keras.preprocessing.image import load_img
 
 import random
 import os
@@ -67,7 +66,7 @@ def plot_confusion_matrix(y_true, y_pred, title):
     plt.ylabel('True labels')
     plt.title(title)
     plt.savefig(title + ".png")
-    plt.show()
+   
     
     
 plot_confusion_matrix(y_train, y_pred_train, title="Confusion Matrix for Train Data")
@@ -130,7 +129,7 @@ for i, image_file in enumerate(random_images, 1):
 
 plt.tight_layout()
 plt.savefig("rfc_pred_" + ".png")
-plt.show()
+
 
 print(predictions)
 
