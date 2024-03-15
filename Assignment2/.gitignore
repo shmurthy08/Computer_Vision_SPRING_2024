@@ -1,0 +1,9 @@
+out*.txt
+rf_mod.txt
+rf_out.txt
+rf_*.txt
+*.pkl
+cnn_*.txt
+*.h5
+cnn_comp.*
+CamSeq07/*
