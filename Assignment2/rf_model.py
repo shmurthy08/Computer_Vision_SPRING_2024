@@ -1,6 +1,5 @@
 import os
 import numpy as np
-import matplotlib.pyplot as plt
 import pickle as pkl
 from sklearn.ensemble import RandomForestClassifier
 import time
@@ -16,7 +15,7 @@ X_train, y_train = preprocessed_data['X_train'], preprocessed_data['y_train']
 # Start the timer
 start_time = time.time()
 
-rf = RandomForestClassifier(n_estimators=3, random_state=42)
+rf = RandomForestClassifier(n_estimators=2, max_depth=3, random_state=42)
 rf.fit(X_train, y_train)
 
 # Start the timer

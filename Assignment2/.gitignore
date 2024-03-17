@@ -7,3 +7,4 @@ cnn_*.txt
 *.h5
 cnn_comp.*
 CamSeq07/*
+*.npz
