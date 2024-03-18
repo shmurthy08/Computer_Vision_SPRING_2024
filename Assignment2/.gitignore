@@ -6,5 +6,6 @@ rf_*.txt
 cnn_*.txt
 *.h5
 cnn_comp.*
-CamSeq07/*
+*/CamSeq07/*
 *.npz
+eda*.txt
