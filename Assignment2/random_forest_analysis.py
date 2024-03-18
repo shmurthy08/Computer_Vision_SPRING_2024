@@ -1,9 +1,7 @@
-import os
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle as pkl
 from sklearn.metrics import accuracy_score, classification_report
-from sklearn.metrics import precision_score, recall_score, f1_score
 
 # Load preprocessed data
 preprocessed_data = np.load("preprocessed_data_for_RF.npz")

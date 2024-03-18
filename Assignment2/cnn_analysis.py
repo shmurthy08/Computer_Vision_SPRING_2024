@@ -146,18 +146,18 @@ plt.axis("off")
 plt.savefig('cnn_saliency_map.png')
 plt.show()
 
-# # # GradCAM using tf-explain
-# # # Create a GradCAM explainer
-# # explainer = grad_cam.GradCAM()
+# GradCAM using tf-explain
+# Create a GradCAM explainer
+explainer = grad_cam.GradCAM()
 
 
-# # for i in range(9):
-# #     # Call to explain() method
-# #     j = i + 1
-# #     output = explainer.explain((X_test, y_test), vgg_model, None, f"conv2d_{j}")
+for i in range(9):
+    # Call to explain() method
+    j = i + 1
+    output = explainer.explain((X_test, y_test), vgg_model, None, f"conv2d_{j}")
 
-# #     # Save output
-# #     explainer.save(output, '.', f'cnn_gradcam_{j}.png')
+    # Save output
+    explainer.save(output, '.', f'cnn_gradcam_{j}.png')
 
 
 
