@@ -1,7 +1,7 @@
 ---
 title: "Semantic Segmentation: CNN vs Random Forest"
 author: "Shree Murthy"
-date: "02/19/2024"
+date: "03/18/2024"
 format:
   pdf:
     fig-pos: 'h'
