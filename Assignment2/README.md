@@ -21,8 +21,8 @@ Dylan Inafuku and Rahul Sura:
 # Code Notes:
 
 - Code Compiles and runs properly
-- Code can produce other images that aren't used in the report, these images helped me flesh out my report even though it wasn't included. The code for these images are committed in the repository. 
-- Tried to push cnn model, random forest model, and preprocessed github was not able to handle the size of the files and caused tons of issues when reverting the push and fixing my git history. 
+- Code can produce all images that are used in the report. It also produces extra images that helped me flesh out my report even though it wasn't included. The code for these images are committed in the repository. To keep the codebase simple I did not include any images since the code will create and save them. 
+- Tried to push cnn model, random forest model, and preprocessed data github was not able to handle the size of the files and caused tons of issues when reverting the push and fixing my git history. 
 
 # References
 
