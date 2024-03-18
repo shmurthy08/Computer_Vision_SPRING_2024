@@ -41,7 +41,7 @@ Coupling the training time and the output analysis, using an RF model was not su
 
 There are 202 images and masks (101 each). Each image and mask are 720x960x3. The images with '(name)_L.png' are the masks. Furthermore, there is a `label_colors.txt` file that contains all the color codes for the various segments. There are 32 classes within the dataset: such as, buildings, trees, bicyclists, and etc. Since the `CamSeq07` dataset is derived from a video, the images are not independent of each other. To ensure no overfitting occurs, I will have to shuffle the pairs before splitting them. Below is a sample image and mask:
 
-![Sample Pair](../src/example_image_and_mask.png){width=250px}
+![Sample Pair](../src/example_image_and_mask.png){width=300px}
 
 \pagebreak
 The masks are smooth and segments everything visible within the original image. This is good to see because this will be needed to ensure the model is trained properly on all the visible classes. Overall, the images will have to be resized to ensure model is not overfitting and can train faster. Also, the masks will have to be encoded with the proper classes such that we can `argmax` the output to get the predicted mask.
@@ -74,7 +74,7 @@ The CNN model had the following results and history plot:
 |   Validation Data        |   0.0815 |   0.9236     |   0.9185       |   0.8500      |
 |   Test Data              |   0.086  |   0.919      |   0.914        |   0.842       |
 
-![CNN History](../src/vgg_model_loss_accuracy.png){width=350px}
+![CNN History](../src/vgg_model_loss_accuracy.png){width=250px}
 
 \normalsize
 Loss and accuracy for train and val improved over time and had no overfitting. The history plot proves that the model converged properly and there were no issues during the training stage. Furthermore, the accuracy scores were better than the RF model proving that the CNN was able to produce better masks. However, the key indicators were the Dice and IoU score. However, the difference between the dice and IoU scores was concerning. Both metrics are used to evaluate overlaps between original and predicted masks. The high dice score indcated the entire original and predicted mask had high similarity. However, the IoU score indicated that the pixel-wise overlap wasn't as high.
@@ -92,7 +92,7 @@ Each image in the table is ordered as follows: original image, original mask, pr
 
 | Saliency Map                                            | GradCAM Map                                             |
 |:-------------------------------------------------------:|:-------------------------------------------------------:|
-| ![Saliency Map](../src/cnn_saliency_map.png){width=300px}    | ![GradCAM Map](../src/cnn_gradcam_2.png){width=250px}     |
+| ![Saliency Map](../src/cnn_saliency_map.png){width=275px}    | ![GradCAM Map](../src/cnn_gradcam_2.png){width=230px}     |
 
 The Saliency map and GradCAM map proved the assumptions I made from the 3 best and worst images. The model was focusing on the larger segments and not the smaller segments. The two maps indicate that the model focused on the large profound objects on the sides of the road and then worked its way to the center where the bicyclists are located and where smaller segments can be found. 
 
