@@ -28,14 +28,14 @@ For the Random Forest (RF) model, I created a 70/30 train-test split and trained
 |   Test Data   |   0.8295   |   0.9140   |
 
 \normalsize
-For both datasets, the IoU scores were above 0.9. This was a good sign that the model was able to classify the pixels well. While the accuracy is lower, those numbers are just provided to show that the model is not overfitting. The IoU score is the most important metric for semantic segmentation. Below is an example output of the model:
+For both datasets, the IoU scores were above 0.9. This was a good sign that the model was able to classify the pixels well. While the accuracy is lower, those numbers are just provided to show that the model is not overfitting. The IoU score is the most important metric for semantic segmentation and that score provides high pixel-wise overlap. Below is an example output of the model:
 
 ![Random Forest Example](../src/predicted_mask.png){width=300px}
 
 \pagebreak
 The predicted mask shows that the model was able to identify every section of the image. However, the segmentations aren't defined. For instance, the car is not segmented properly to showcase the entire shape of the car and the segmentation is not clear. The entire predicted mask has noise and is not smooth compared to the actual mask. This is due to the pixels being fed in without spatial relationships. 
 
-Coupling the training time and the output analysis, using an RF model was not sufficient. I would rather use a CNN model to train faster to leverage faster analysis and better spatial understanding of the image.
+Coupling the training time with the output mask analysis, using an RF model was not sufficient. I would rather use a CNN model to train faster to leverage faster analysis and better spatial understanding of the image. It is not worth using a model that takes 3 hours to train on a GPU and produces noisy masks that don't showcase smooth segmentation of features.
 
 # 2. Exploratory Data Analysis
 

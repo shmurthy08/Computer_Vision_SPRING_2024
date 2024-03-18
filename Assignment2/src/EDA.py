@@ -31,10 +31,10 @@ for filename in sorted(os.listdir(dataset_dir)):
             plt.figure()
             plt.subplot(1, 2, 1)
             plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-            plt.title('Image')
+            plt.title('Mask')
             plt.subplot(1, 2, 2)
             plt.imshow(cv2.cvtColor(mask, cv2.COLOR_BGR2RGB))
-            plt.title('Mask')
+            plt.title('Image')
 
             # Save the plot as an image
             plt.savefig('example_image_and_mask.png')
