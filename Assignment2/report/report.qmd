@@ -15,7 +15,7 @@ toc-title: Table of Contents
 
 # 1. Introduction
 
-Semantic segmentation involves classifying every pixel in an image to a specific class. For this report, I used the `CamSeq07` model which contains 202 images and masks to learn more about semantic segmentation. The goal of this project is to analyze how well a CNN and Random Forest model can perform on semantic segmentation. The CNN model was trained using the `U-Net` architecture and the Random Forest model was trained using the `RandomForestClassifier` from the `sklearn` library. Before I created the CNN architecture, I used the Random Forest model to decide if deep learning was required.
+Semantic segmentation involves classifying every pixel in an image to a specific class. For this report, I used the `CamSeq07` dataset which contains 202 images and masks to learn more about semantic segmentation. The goal of this project is to analyze how well a CNN and Random Forest model can perform on semantic segmentation. The CNN model was trained using the `U-Net` architecture and the Random Forest model was trained using the `RandomForestClassifier` from the `sklearn` library. Before I created the CNN architecture, I used the Random Forest model to decide if deep learning was required.
 
 ## 1.1 Random Forest Analysis
 
@@ -35,7 +35,7 @@ For both datasets, the IoU scores were above 0.9. This was a good sign that the 
 \pagebreak
 The predicted mask shows that the model was able to identify every section of the image. However, the segmentations aren't defined. For instance, the car is not segmented properly to showcase the entire shape of the car and the segmentation is not clear. The entire predicted mask has noise and is not smooth compared to the actual mask. This is due to the pixels being fed in without spatial relationships. 
 
-Thus, coupling the training time and the output analysis, using an RF model was not sufficient. I would rather use a CNN model to train faster to leverage faster analysis and better spatial understanding of the image.
+Coupling the training time and the output analysis, using an RF model was not sufficient. I would rather use a CNN model to train faster to leverage faster analysis and better spatial understanding of the image.
 
 # 2. Exploratory Data Analysis
 
@@ -53,7 +53,7 @@ The masks are smooth and segments everything visible within the original image. 
 For both the CNN and RF the preprocessing steps for the images are the same. The images are resized to 256x256x3. 
 For the masks, the two models differ. The RF model doesn't encode the masks because doing so creates a 256x256x32 (32 classes) array. This was too large to fit into memory and training shot up to 8 hours before killing the process. Thus, the masks for the RF were resized to 256x256x3. The CNN model was efficiently encoded and resized to be 256x256x32. Both models shuffled the masks and image pairs to avoid overfitting. The CNN model was split into 65/15/20 train-validation-test split. The RF model was split into a 70/30 train-test split. 
 
-There was no augmentation used for the RF model aside from zoom to fit the desired size requirements. The CNN model was prepared without augmentation as well. My reasoning is that conducting other augmentations could ruin the mask encodings and the augmentations may not be consistent (i.e the same flip may not be applied to the image and mask). Finally, all the data was stored in a `.npz` file to keep data consistent and easily loaded into other files. 
+Augmentation was not used for the RF model aside from zoom to fit the desired size requirements. The CNN model did not use other augmentations; I used zoom to resize the images/masks. My reasoning is that conducting other augmentations could ruin the mask encodings and the augmentations may not be consistent (i.e the same flip may not be applied to the image and mask). Finally, all the data was stored in a `.npz` file to keep data consistent and easily loaded into other files. 
 
 ## 3.2 Model Creation
 
@@ -92,7 +92,7 @@ Each image in the table is ordered as follows: original image, original mask, pr
 
 | Saliency Map                                            | GradCAM Map                                             |
 |:-------------------------------------------------------:|:-------------------------------------------------------:|
-| ![Saliency Map](../src/cnn_saliency_map.png){width=300px}    | ![GradCAM Map](../src/cnn_gradcam_2.png){width=300px}     |
+| ![Saliency Map](../src/cnn_saliency_map.png){width=300px}    | ![GradCAM Map](../src/cnn_gradcam_2.png){width=250px}     |
 
 The Saliency map and GradCAM map proved the assumptions I made from the 3 best and worst images. The model was focusing on the larger segments and not the smaller segments. The two maps indicate that the model focused on the large profound objects on the sides of the road and then worked its way to the center where the bicyclists are located and where smaller segments can be found. 
 
@@ -112,7 +112,7 @@ For the loss functions, I could've used Jaccard Loss instead of Categorical Dice
 
 In the future, I want to research augmentation approaches that preserve key mask information to help improve the pixel-wise overlap. During the assignment timeframe, I didn't find many approaches; moreover, I didn't want the models to falter drastically because I didn't know how to keep the mask and image augmentations consistent. Also, a Vision Transformer may be better suited for semantic segmentation because of the attention layers. This could help the model focus on the smaller segments after the attention layers focused on the larger segments. If I continue developing the CNN model created in this report, I would experiment adding more layers to the decoder to see if the model can capture the smaller segments and improve the Jaccard score. For the sake of efficiency and minimal computational resources I didn't pursue this approach for this assignment. 
 
-
+\newpage
 # 6. Resources
 
 1. [Learning Rate Scheduler](https://neptune.ai/blog/how-to-choose-a-learning-rate-scheduler)
