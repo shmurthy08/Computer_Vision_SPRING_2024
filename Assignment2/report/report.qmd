@@ -1,0 +1,22 @@
+---
+title: "Semantic Segmentation: CNN vs Random Forest"
+author: "Shree Murthy"
+date: "02/19/2024"
+format:
+  pdf:
+    fig-pos: 'h'
+    highlight-style: github   
+toc: true
+toc-depth: 3
+toc-title: Table of Contents
+---
+\newpage
+
+
+# 1. Introduction
+
+Semantic segmentation involves classifying every pixel in an image to a specific class. For this report, I used the `CamSeq07` model which contains 202 images and masks. The goal of this project was to analyze how well a CNN and Random Forest model can perform on semantic segmentation. The CNN model was trained using the `U-Net` architecture and the Random Forest model was trained using the `RandomForestClassifier` from the `sklearn` library. Before I created the CNN architecture, I used the Random Forest model to decide if deep learning was required.
+
+## 1.1 Random Forest Analysis
+
+For the Random Forest (RF) model, I created a 70/30 train-test split and trained the model using the following parameters. 
