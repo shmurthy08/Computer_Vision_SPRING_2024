@@ -6,7 +6,7 @@ from sklearn.utils import shuffle
 from scipy.ndimage import zoom
 
 # Function to preprocess images and masks
-def preprocess_images_and_masks(dataset_dir, label_colors, desired_size=(256, 256, 3)):
+def preprocess_images_and_masks(dataset_dir, desired_size=(256, 256, 3)):
     images = []
     masks = []
     
@@ -30,6 +30,7 @@ def preprocess_images_and_masks(dataset_dir, label_colors, desired_size=(256, 25
                 
                 # Resize image
                 image_resized = np.array(zoom(image, (desired_size[0] / image.shape[0], desired_size[1] / image.shape[1], 1)))
+                image_resized = image_resized / 255.0  # Normalize image
                 images.append(image_resized.flatten())  # Append resized image
     
     # Convert lists to numpy arrays
@@ -46,7 +47,7 @@ def preprocess_images_and_masks(dataset_dir, label_colors, desired_size=(256, 25
 dataset_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "CamSeq07")
 
 # Preprocess images and masks
-images, masks = preprocess_images_and_masks(dataset_dir, label_colors)
+images, masks = preprocess_images_and_masks(dataset_dir)
 
 # Check shapes and other information
 print("Shape of images array:", images.shape)

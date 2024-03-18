@@ -9,3 +9,5 @@ cnn_comp.*
 */CamSeq07/*
 *.npz
 eda*.txt
+*.log
+*.aux
