@@ -5,7 +5,9 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras import backend as K
-from tensorflow.keras.callbacks import LearningRateScheduler, ReduceLROnPlateau
+from tensorflow.keras.callbacks import ReduceLROnPlateau
+import matplotlib.pyplot as plt
+
 
 # Load Preprocessed data
 load_data = np.load('dataset.npz')
@@ -13,12 +15,12 @@ X_train, y_train, X_val, y_val, X_test, y_test = load_data['X_train'], load_data
 
 # Define dice coefficient metric
 def dice_coef(y_true, y_pred):
-    """"
+    """""
         Dice coefficient metric
         :param y_true: ground truth mask
         :param y_pred: predicted mask
         :return: dice coefficient
-    """"
+    """""
     y_true_f = K.flatten(y_true)
     y_pred_f = K.flatten(y_pred)
     intersection = K.sum(y_true_f * y_pred_f)
@@ -26,6 +28,12 @@ def dice_coef(y_true, y_pred):
 
 # Define Jaccard index (IoU) metric
 def jaccard_index(y_true, y_pred):
+    """""
+        Jaccard index (IoU) metric
+        :param y_true: ground truth mask
+        :param y_pred: predicted mask
+        :return: jaccard index
+    """""
     intersection = K.sum(K.abs(y_true * y_pred), axis=[1,2,3])
     union = K.sum(y_true, axis=[1,2,3]) + K.sum(y_pred, axis=[1,2,3]) - intersection
     return K.mean((intersection + smooth) / (union + smooth), axis=0)
@@ -33,12 +41,25 @@ def jaccard_index(y_true, y_pred):
 
 # Define dice coefficient loss function
 def categorical_dice_loss(y_true, y_pred):
+    """""
+        Categorical dice loss function
+        :param y_true: ground truth mask
+        :param y_pred: predicted mask
+        :return: dice loss
+    """""
     return 1 - dice_coef(y_true, y_pred)
 
 smooth = 1.
 
 # Define U-Net architecture with transfer learning using VGG16
 def unet_vgg(input_shape):
+    """""
+        U-Net architecture with transfer learning using VGG16
+        :param input_shape: input shape of the model
+        :return: U-Net model with VGG16 encoder
+    """""
+    
+    
     # Load pre-trained VGG16 model as encoder
     base_model = VGG16(weights='imagenet', include_top=False, input_shape=input_shape)
 
@@ -103,7 +124,18 @@ vgg_checkpoint = ModelCheckpoint(vgg_checkpoint_path, monitor='val_loss', verbos
 vgg_lr_scheduler = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=7, min_lr=1e-6, verbose=1)
 
 # Train the VGG16 model
-vgg_model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=75, batch_size=32, callbacks=[vgg_checkpoint, vgg_lr_scheduler])
+history = vgg_model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=75, batch_size=32, callbacks=[vgg_checkpoint, vgg_lr_scheduler])
+
+# Plot the training and validation loss
+plt.plot(history.history['loss'], label='Training Loss')
+plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.plot(history.history['accuracy'], label='Training Accuracy')
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+plt.title('Model Loss and Accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Loss/Accuracy')
+plt.legend()
+plt.savefig("vgg_model_loss_accuracy.png")
 
 # Load best weights for VGG16 model
 vgg_model.load_weights(vgg_checkpoint_path)
@@ -112,4 +144,4 @@ vgg_model.load_weights(vgg_checkpoint_path)
 vgg_model.evaluate(X_test, y_test)
 
 # Save the entire VGG16 model
-vgg_model.save("vgg_unet_model.h5")
+vgg_model.save("history_vgg_unet_model.h5")

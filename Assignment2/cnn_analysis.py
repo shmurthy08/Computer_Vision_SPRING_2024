@@ -33,7 +33,7 @@ print(len(y_out), len(y_test))
 custom_objects = {'categorical_dice_loss': categorical_dice_loss, 'dice_coef': dice_coef, 'jaccard_index': jaccard_index}
 
 # Load the model with the custom loss function
-vgg_model = load_model("vgg_unet_model.h5", custom_objects=custom_objects)
+vgg_model = load_model("history_vgg_unet_model.h5", custom_objects=custom_objects)
 
 # ------------- Decoding Masks ---------------
 # Define label colors dictionary
@@ -82,7 +82,7 @@ plt.savefig('cnn_decoded_mask.png')
 # ------------- Visualize the Segmentation ---------------
 
 # Visualization
-def visualize_segmentation(image, original_mask, mask, label_colors):
+def visualize_segmentation(image, original_mask, mask, label_colors, name):
     plt.figure(figsize=(10, 5))
     plt.subplot(1, 3, 1)
     plt.imshow(image)
@@ -98,12 +98,12 @@ def visualize_segmentation(image, original_mask, mask, label_colors):
     plt.imshow(mask)
     plt.title("Segmentation Mask")
     plt.axis("off")
-    plt.savefig('cnn_segmentation.png')
+    plt.savefig(name)
     plt.show()
 
 # # Choose a random sample for visualization
 sample_index = np.random.randint(len(X_test))
-visualize_segmentation(X_test[sample_index], decoded_y_test[sample_index], decoded_masks[sample_index], label_colors)
+visualize_segmentation(X_test[sample_index], decoded_y_test[sample_index], decoded_masks[sample_index], label_colors, 'cnn_segmentation.png')
 
 
 # ------------- Saliency Map and GradCAM ---------------
@@ -159,6 +159,25 @@ for i in range(9):
     # Save output
     explainer.save(output, '.', f'cnn_gradcam_{j}.png')
 
+
+# 3 Best/3 Worst based on IoU scores
+iou_scores = []
+for i in range(len(decoded_masks)):
+    intersection = np.logical_and(decoded_y_test[i], decoded_masks[i])
+    union = np.logical_or(decoded_y_test[i], decoded_masks[i])
+    iou_scores.append(np.sum(intersection) / np.sum(union))
+
+# Sort the images based on the IoU scores
+sorted_indices = np.argsort(iou_scores)
+best_indices = sorted_indices[-3:]
+worst_indices = sorted_indices[:3]
+
+# Visualize the best and worst images
+for index in best_indices:
+    visualize_segmentation(X_test[index], decoded_y_test[index], decoded_masks[index], label_colors, f'cnn_best_{index}.png')
+
+for index in worst_indices:
+    visualize_segmentation(X_test[index], decoded_y_test[index], decoded_masks[index], label_colors, f'cnn_worst_{index}.png')
 
 
 
