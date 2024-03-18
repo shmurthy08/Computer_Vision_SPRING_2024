@@ -25,8 +25,10 @@ def jaccard_index(y_true, y_pred):
 
 
 load_data = np.load('dataset.npz')
-X_train, y_train, X_val, y_val, X_test, y_test = load_data['X_train'], load_data['y_train'], load_data['X_val'], load_data['y_val'], load_data['X_test'], load_data['y_test']
+X_test, y_test = load_data['X_test'], load_data['y_test']
 
+y_out = np.argmax(y_test, axis=-1)
+print(len(y_out), len(y_test))
 # Define the custom objects dictionary with the custom loss function
 custom_objects = {'categorical_dice_loss': categorical_dice_loss, 'dice_coef': dice_coef, 'jaccard_index': jaccard_index}
 
@@ -46,7 +48,18 @@ label_colors = {
     28: [64, 0, 64], 29: [192, 192, 0], 30: [0, 0, 0], 31: [64, 192, 0]
 }
 
+
+
 # Decode masks
+def decode_mask(encoded_mask, label_colors):
+    # Initialize decoded_mask with zeros
+    decoded_mask = np.zeros((encoded_mask.shape[0], encoded_mask.shape[1], 3), dtype=np.uint8)
+    # Iterate over each color and set the decoded mask to the corresponding color
+    for k in label_colors.keys():
+        decoded_mask[encoded_mask == k] = label_colors[k]
+    return decoded_mask
+
+
 loss, dice_coef, jaccard_index, accuracy = vgg_model.evaluate(X_test, y_test)
 print("Test Accuracy: {:.3f}".format(accuracy))
 print("Test Jaccard Index: {:.3f}".format(jaccard_index))
@@ -58,27 +71,27 @@ predicted_masks = vgg_model.predict(X_test)
 single_layer = np.argmax(predicted_masks, axis=-1)
 
 # Initialize decoded_masks with the correct shape
-decoded_masks = np.zeros((X_test.shape[0], 256, 256, 3), dtype=np.uint8)
+decoded_masks = np.array([decode_mask(mask, label_colors) for mask in single_layer])
 
-# Iterate over each sample
-for i in range(decoded_masks.shape[0]):
-    # Get the single-layer mask for the current sample
-    single_layer_mask = single_layer[i]
-    # Create an output RGB array for the current sample
-    output_sample = np.zeros((256, 256, 3))
-    # Assign colors based on the label colors dictionary
-    for k in label_colors.keys():
-        output_sample[single_layer_mask == k] = label_colors[k]
-    # Update the decoded masks array with the RGB output for the current sample
-    decoded_masks[i] = np.uint8(output_sample)
+# Initialize decoded_masks with the correct shape for y_test
+decoded_y_test = np.array([decode_mask(mask, label_colors) for mask in y_out])
+plt.imshow(decoded_masks[0])
+plt.savefig('cnn_decoded_mask.png')
 
+
+# ------------- Visualize the Segmentation ---------------
 
 # Visualization
-def visualize_segmentation(image, mask, label_colors):
+def visualize_segmentation(image, original_mask, mask, label_colors):
     plt.figure(figsize=(10, 5))
     plt.subplot(1, 3, 1)
     plt.imshow(image)
     plt.title("Image")
+    plt.axis("off")
+    
+    plt.subplot(1, 3, 2)
+    plt.imshow(original_mask)
+    plt.title("Original Mask")
     plt.axis("off")
     
     plt.subplot(1, 3, 3)
@@ -88,12 +101,12 @@ def visualize_segmentation(image, mask, label_colors):
     plt.savefig('cnn_segmentation.png')
     plt.show()
 
-# Choose a random sample for visualization
+# # Choose a random sample for visualization
 sample_index = np.random.randint(len(X_test))
-visualize_segmentation(X_test[sample_index], decoded_masks[sample_index], label_colors)
+visualize_segmentation(X_test[sample_index], decoded_y_test[sample_index], decoded_masks[sample_index], label_colors)
 
 
-
+# ------------- Saliency Map and GradCAM ---------------
 def compute_saliency_map(model, input_image):
     input_tensor = tf.convert_to_tensor(input_image)
     input_tensor = tf.expand_dims(input_tensor, axis=0)  # Add batch dimension
@@ -133,18 +146,18 @@ plt.axis("off")
 plt.savefig('cnn_saliency_map.png')
 plt.show()
 
-# GradCAM using tf-explain
-# Create a GradCAM explainer
-explainer = grad_cam.GradCAM()
+# # # GradCAM using tf-explain
+# # # Create a GradCAM explainer
+# # explainer = grad_cam.GradCAM()
 
 
-for i in range(9):
-    # Call to explain() method
-    j = i + 1
-    output = explainer.explain((X_test, y_test), vgg_model, None, f"conv2d_{j}")
+# # for i in range(9):
+# #     # Call to explain() method
+# #     j = i + 1
+# #     output = explainer.explain((X_test, y_test), vgg_model, None, f"conv2d_{j}")
 
-    # Save output
-    explainer.save(output, '.', f'cnn_gradcam_{j}.png')
+# #     # Save output
+# #     explainer.save(output, '.', f'cnn_gradcam_{j}.png')
 
 
 
